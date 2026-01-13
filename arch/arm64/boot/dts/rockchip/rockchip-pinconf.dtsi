@@ -4,7 +4,6 @@
  */
 
 &pinctrl {
-	/omit-if-no-ref/
 	pcfg_pull_up: pcfg-pull-up {
 		bias-pull-up;
 	};
