@@ -1403,6 +1403,11 @@
 				#address-cells = <1>;
 				#size-cells = <0>;
 				reg = <0>;
+
+				hdmi0_in_vp0: endpoint@0 {
+					reg = <0>;
+					remote-endpoint = <&hdmi0_out_vp0>;
+				};
 			};
 
 			vp1: port@1 {
@@ -1415,6 +1420,11 @@
 				#address-cells = <1>;
 				#size-cells = <0>;
 				reg = <2>;
+
+				dp0_in_vp2: endpoint@2 {
+					reg = <2>;
+					remote-endpoint = <&dp0_out_vp2>;
+				};
 			};
 
 			vp3: port@3 {
@@ -1637,8 +1647,10 @@
 
 			hdmi0_in: port@0 {
 				reg = <0>;
-			};
 
+			hdmi0_out_vp0: endpoint {
+				remote-endpoint = <&hdmi0_in_vp0>;
+			};
 			hdmi0_out: port@1 {
 				reg = <1>;
 			};
@@ -3256,6 +3268,81 @@
 		rockchip,grf = <&ioc>;
 		#address-cells = <2>;
 		#size-cells = <2>;
+
+	can1: can@fea60000 {
+		compatible = "rockchip,rk3588-can", "rockchip,can-2.0";
+		reg = <0x0 0xfea60000 0x0 0x1000>;
+		interrupts = <GIC_SPI 342 IRQ_TYPE_LEVEL_HIGH>;
+		clocks = <&cru CLK_CAN1>, <&cru PCLK_CAN1>;
+		clock-names = "baudclk", "apb_pclk";
+		resets = <&cru SRST_CAN1>, <&cru SRST_P_CAN1>;
+		reset-names = "can", "can-apb";
+		pinctrl-names = "default";
+		pinctrl-0 = <&can1m0_pins>;
+		tx-fifo-depth = <1>;
+		rx-fifo-depth = <6>;
+		status = "disabled";
+	};
+
+	can2: can@fea70000 {
+		compatible = "rockchip,rk3588-can", "rockchip,can-2.0";
+		reg = <0x0 0xfea70000 0x0 0x1000>;
+		interrupts = <GIC_SPI 343 IRQ_TYPE_LEVEL_HIGH>;
+		clocks = <&cru CLK_CAN2>, <&cru PCLK_CAN2>;
+		clock-names = "baudclk", "apb_pclk";
+		resets = <&cru SRST_CAN2>, <&cru SRST_P_CAN2>;
+		reset-names = "can", "can-apb";
+		pinctrl-names = "default";
+		pinctrl-0 = <&can2m0_pins>;
+		tx-fifo-depth = <1>;
+		rx-fifo-depth = <6>;
+		status = "disabled";
+	};
+
+	usbhost3_0: usbhost3@fcd00000 {
+		compatible = "rockchip,rk3588-dwc3", "rockchip,rk3399-dwc3";
+		clocks = <&cru REF_CLK_USB3OTG2>, <&cru SUSPEND_CLK_USB3OTG2>,
+			 <&cru ACLK_USB3OTG2>, <&cru CLK_UTMI_OTG2>,
+			 <&cru PCLK_PHP_ROOT>;
+		clock-names = "ref", "suspend", "bus", "utmi", "php";
+		#address-cells = <2>;
+		#size-cells = <2>;
+		ranges;
+		status = "disabled";
+
+		usbhost_dwc3_0: usb@fcd00000 {
+			compatible = "snps,dwc3";
+			reg = <0x0 0xfcd00000 0x0 0x400000>;
+			interrupts = <GIC_SPI 222 IRQ_TYPE_LEVEL_HIGH>;
+			resets = <&cru SRST_A_USB3OTG2>;
+			reset-names = "usb3-host";
+			dr_mode = "host";
+			phys = <&combphy2_psu PHY_TYPE_USB3>;
+			phy-names = "usb3-phy";
+			phy_type = "utmi_wide";
+			snps,dis_enblslpm_quirk;
+			snps,dis-u2-freeclk-exists-quirk;
+			snps,dis-del-phy-power-chg-quirk;
+			snps,dis-tx-ipgap-linecheck-quirk;
+			status = "disabled";
+		};
+	};
+
+	hdptxphy_hdmi0: hdmiphy@fed60000 {
+		compatible = "rockchip,rk3588-hdptx-phy";
+		reg = <0x0 0xfed60000 0x0 0x2000>;
+		clocks = <&cru CLK_USB2PHY_HDPTXRXPHY_REF>, <&cru PCLK_HDPTX0>;
+		clock-names = "ref", "apb";
+		clock-output-names = "clk_hdmiphy_pixel0";
+		#clock-cells = <0>;
+		resets = <&cru SRST_HDPTX0>, <&cru SRST_P_HDPTX0>,
+			 <&cru SRST_HDPTX0_INIT>, <&cru SRST_HDPTX0_CMN>,
+			 <&cru SRST_HDPTX0_LANE>, <&cru SRST_HDPTX0_ROPLL>,
+			 <&cru SRST_HDPTX0_LCPLL>;
+		reset-names = "phy", "apb", "init", "cmn", "lane", "ropll", "lcpll";
+		#phy-cells = <0>;
+		status = "disabled";
+	};
 
 		gpio0: gpio@fd8a0000 {
 			compatible = "rockchip,gpio-bank";
