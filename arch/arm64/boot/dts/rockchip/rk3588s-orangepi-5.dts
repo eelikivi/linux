@@ -338,9 +338,9 @@
 	status = "okay";
 };
 
-&dp0_in_vp2 {
-	status = "okay";
-};
+// &dp0_in_vp2 {
+//	status = "okay";
+// };
 
 &gpu {
 	mali-supply = <&vdd_gpu_s0>;
@@ -487,9 +487,9 @@
 		#sound-dai-cells = <0>;
 		compatible = "everest,es8388", "everest,es8323";
 		reg = <0x10>;
-		clocks = <&mclkout_i2s1>;
-		clock-names = "mclk";
-		assigned-clocks = <&mclkout_i2s1>;
+		// clocks = <&mclkout_i2s1>;
+		// clock-names = "mclk";
+		// assigned-clocks = <&mclkout_i2s1>;
 		assigned-clock-rates = <12288000>;
 		pinctrl-names = "default";
 		pinctrl-0 = <&i2s1m0_mclk>;
@@ -511,9 +511,9 @@
 
 			port@0 {
 				reg = <0>;
-				usbc0_role_sw: endpoint@0 {
-					remote-endpoint = <&dwc3_0_role_switch>;
-				};
+				// usbc0_role_sw: endpoint@0 {
+				//	remote-endpoint = <&dwc3_0_role_switch>;
+				// };
 			};
 		};
 
