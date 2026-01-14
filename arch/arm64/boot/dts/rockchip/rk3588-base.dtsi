@@ -3268,6 +3268,7 @@
 		rockchip,grf = <&ioc>;
 		#address-cells = <2>;
 		#size-cells = <2>;
+	};
 
 	can1: can@fea60000 {
 		compatible = "rockchip,rk3588-can", "rockchip,can-2.0";
